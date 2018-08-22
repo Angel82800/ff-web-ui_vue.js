@@ -1,0 +1,75 @@
+<template>
+  <v-container grid-list-lg>
+    <v-layout wrap>
+      <v-flex xs12 sm6 class="m4-3">
+        <h1>Expert home page</h1>
+        <v-btn class="my-4" large color="primary" @click.native="buildProfile">{{ profileVerb }} your profile</v-btn>
+        <v-alert :value="profile.id && !hasBasic" outline type="error">
+          {{ warnings.expert.basic }}
+        </v-alert>
+        <v-alert :value="expert.userProfileId && !hasAvatar" outline type="error">
+          {{ warnings.expert.photo }}
+        </v-alert>
+        <v-alert :value="(initIndustries && !industries.length) || (initSkills && !categories.length)" outline type="error">
+          {{ warnings.expert.expertise }}
+        </v-alert>
+        <v-alert :value="initEmployers && !employers.length" outline type="error">
+          {{ warnings.expert.history }}
+        </v-alert>
+      </v-flex>
+      <v-flex xs12 sm6 class="m4-3 text-xs-left">
+        <h2 class="mb-3">Welcome to FactoryFix!</h2>
+        <p class="mb-2">FactoryFix keeps you informed about what companies in your area are paying for people with your skills and experience. We’ll send you pay rate information for full-time jobs and/or projects and side-gigs. </p>
+        <p class="mb-2">If you are interested in any of these jobs or side-gigs, you can easily apply to them right through our website.</p>
+        <h3 class="mt-4">Please reach out to us at (312) 313-1242 if you have any questions.</h3>
+      </v-flex>
+      <v-flex xs12 class="mt-5">
+        <big-logo color="gray" />
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+import BigLogo from '@/components/Parts/Decoration/BigLogo'
+export default {
+  components: {
+    bigLogo: BigLogo
+  },
+  computed: {
+    expert: function () {
+      return this.$store.state.expert.mine
+    },
+    profile: function () {
+      return this.$store.state.userProfile.mine
+    },
+    hasAvatar: function () {
+      if (this.expert.photo_url !== 'none') {
+        if (this.expert.photo_url) {
+          return true
+        }
+        if (this.profile.auth0_avatar) {
+          return true
+        }
+      }
+      return false
+    },
+    hasBasic: function () {
+      return (this.profile.name_first && this.profile.name_last && this.profile.email && this.expert.postalCode)
+    },
+    profileVerb: function () {
+      return (this.hasAvatar && this.industries.length && this.categories.length && this.employers.length) ? 'Edit' : 'Complete'
+    },
+    ...mapState('expertSkills', {initSkills: 'myDataInit', categories: 'categories', skills: 'skills', details: 'details'}),
+    ...mapState('expertIndustries', {initIndustries: 'myDataInit', industries: 'industries'}),
+    ...mapState('expertHistory', {initEmployers: 'myDataInit', employers: 'employers'}),
+    ...mapState('vars', ['warnings'])
+  },
+  methods: {
+    buildProfile: function () {
+      this.$router.push({ name: 'expert-profile', params: {step: 4} })
+    }
+  }
+}
+</script>

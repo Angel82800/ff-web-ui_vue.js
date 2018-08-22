@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "ff-app-dev",
+    "prod": "ff-app-prod"
+  }
+}

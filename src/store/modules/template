@@ -1,0 +1,35 @@
+// BEGIN helpers
+import axios from 'axios'
+// END helpers
+
+const state = {}
+
+const mutations = {}
+
+const getters = {
+  apiPort (state, getters, rootState) {
+    return (location.hostname === '2fers-dev.factoryfix.com' || location.hostname === 'gigs.factoryfix.com') ? '' : rootState.vars.api.ports.customers
+  },
+  baseUrl (state, getters, rootState) {
+    return rootState.vars.api.baseUrl + getters.apiPort + '/' + rootState.vars.api.version + '/path'
+  },
+  headers (state, getters, rootState) {
+    return {
+      headers: {
+        Authorization: 'Bearer ' + rootState.auth.access_token
+      }
+    }
+  }
+}
+
+const actions = {}
+
+const namespaced = true
+
+export default {
+  namespaced,
+  state,
+  actions,
+  getters,
+  mutations
+}
