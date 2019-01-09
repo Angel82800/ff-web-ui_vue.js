@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./imgs/vue.png"/>
+  <img src="./imgs/vue.png" width="200" height="200"/>
 </p>
 
 # factoryfix-web
