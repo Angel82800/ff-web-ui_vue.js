@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./imgs/vue.png"/>
+</p>
+
 # factoryfix-web
 
 > Staticly served web UI for FactoryFix
